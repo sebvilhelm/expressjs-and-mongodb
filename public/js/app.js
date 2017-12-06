@@ -26,12 +26,12 @@ function loginUser() {
   var jFrm = new FormData(frmLogin);
   doAjax(
     'POST',
-    '/login-user/',
+    '/login/',
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
-        jCurrentUser.id = jRes.id;
-        jCurrentUser.isAdmin = jRes.isAdmin;
+        jCurrentUser.id = jRes.user.id;
+        jCurrentUser.isAdmin = jRes.user.isAdmin;
         menu.classList.remove('hide');
         showCurrentUserInfo();
         showAndHideAdminButtons();

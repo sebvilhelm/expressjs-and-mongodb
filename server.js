@@ -40,6 +40,21 @@ app.get('/delete-user/:id', (req, res) => {
   });
 });
 
+app.post('/login/', (req, res) => {
+  const jUserLogin = req.fields;
+  user.loginUser(jUserLogin, (err, userData) => {
+    const response = {
+      status: 'err'
+    };
+    if (err) {
+      return res.json(response);
+    }
+    response.status = 'success';
+    response.user = userData;
+    return res.json(response);
+  });
+});
+
 app.listen('3000', err => {
   if (err) {
     console.log("Couldn't connect to port:3000");
