@@ -18,7 +18,7 @@ user.saveUser = (jUserInfo, fCallback) => {
 
   const ajUser = [
     {
-      id: ID,
+      id: ID(),
       name: jUserInfo.userName,
       lastName: jUserInfo.userLastName,
       password: jUserInfo.userPassword,
@@ -28,8 +28,8 @@ user.saveUser = (jUserInfo, fCallback) => {
     }
   ];
 
-  const sjUser = JSON.stringify(jUser);
-  fs.writeFile(__dirname + '/../data/users.txt', sjUser, err => {
+  const sajUser = JSON.stringify(ajUser);
+  fs.writeFile(__dirname + '/../data/users.txt', sajUser, err => {
     if (err) {
       return fCallback(true);
     }
