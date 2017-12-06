@@ -70,9 +70,10 @@ function createUser() {
   jFrm.append('userPosition', sjUserPosition);
   doAjax(
     'POST',
-    'api-create-user.php',
+    '/save-user/',
     function(res) {
-      var jRes = JSON.parse(res);
+      console.log(res);
+      /* var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
         console.log('user created');
         menu.classList.remove('hide');
@@ -80,7 +81,7 @@ function createUser() {
         showPage('pageProfile');
       } else {
         console.log('error');
-      }
+      } */
     },
     jFrm
   );

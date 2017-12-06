@@ -3,6 +3,44 @@ const user = {};
 
 /***********************************************/
 
+user.saveUser = (jUserInfo, fCallback) => {
+  /******************************/
+  // SLET TIL MONGO!!!!
+  const ID = function() {
+    return (
+      '_' +
+      Math.random()
+        .toString(36)
+        .substr(2, 9)
+    );
+  };
+  /******************************/
+
+  const ajUser = [
+    {
+      id: ID,
+      name: jUserInfo.userName,
+      lastName: jUserInfo.userLastName,
+      password: jUserInfo.userPassword,
+      email: jUserInfo.userEmail,
+      phone: jUserInfo.userPhone,
+      position: jUserInfo.userPosition
+    }
+  ];
+
+  const sjUser = JSON.stringify(jUser);
+  fs.writeFile(__dirname + '/../data/users.txt', sjUser, err => {
+    if (err) {
+      return fCallback(true);
+    }
+    return fCallback(false);
+  });
+};
+
+/***********************************************/
+
+/***********************************************/
+
 user.loginUser = (jUser, fCallback) => {
   fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
     if (err) {

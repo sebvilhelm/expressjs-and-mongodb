@@ -77,6 +77,22 @@ app.post('/login/', (req, res) => {
 
 /***********************************************/
 
+app.post('/save-user/', (req, res) => {
+  const jUser = req.fields;
+  // TODO: Save that file!
+  const file = req.files;
+  user.saveUser(jUser, err => {
+    if (err) {
+      res.send('no');
+    }
+    res.send('yay');
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
 app.listen('3000', err => {
   if (err) {
     console.log("Couldn't connect to port:3000");
