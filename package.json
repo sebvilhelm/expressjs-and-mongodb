@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Exam project for Database class fall 2017",
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VilhelmNielsen/db-exam.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -12,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
-    "formidable": "^1.1.1",
+    "express-formidable": "^1.0.0",
     "mongodb": "^3.0.0-rc0"
   },
   "devDependencies": {
