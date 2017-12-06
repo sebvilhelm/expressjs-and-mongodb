@@ -9,9 +9,15 @@ const app = express();
 app.use(express.static('public'));
 app.use(formidable());
 
+/***********************************************/
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
+
+/***********************************************/
+
+/***********************************************/
 
 app.get('/get-users', (req, res) => {
   user.getAllUsers((err, data) => {
@@ -23,12 +29,20 @@ app.get('/get-users', (req, res) => {
   });
 });
 
+/***********************************************/
+
+/***********************************************/
+
 app.get('/get-user/:id', (req, res) => {
   const id = req.params.id;
   user.getUser(id, (err, data) => {
     res.json(data);
   });
 });
+
+/***********************************************/
+
+/***********************************************/
 
 app.get('/delete-user/:id', (req, res) => {
   const id = req.params.id;
@@ -39,6 +53,10 @@ app.get('/delete-user/:id', (req, res) => {
     res.send('User deleted');
   });
 });
+
+/***********************************************/
+
+/***********************************************/
 
 app.post('/login/', (req, res) => {
   const jUserLogin = req.fields;
@@ -55,6 +73,10 @@ app.post('/login/', (req, res) => {
   });
 });
 
+/***********************************************/
+
+/***********************************************/
+
 app.listen('3000', err => {
   if (err) {
     console.log("Couldn't connect to port:3000");
@@ -62,3 +84,4 @@ app.listen('3000', err => {
   }
   console.log('Server is running at port:3000');
 });
+/***********************************************/
