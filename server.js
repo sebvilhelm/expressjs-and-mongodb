@@ -13,15 +13,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/get-users', (req, res) => {
-  user.getAllUsers(data => {
+  user.getAllUsers((err, data) => {
+    if (err) {
+      console.log('oops');
+      return res.json(false);
+    }
+    res.json(data);
+  });
+});
+
+app.get('/get-user/:id', (req, res) => {
+  const id = req.params.id;
+  user.getUser(id, (err, data) => {
     res.json(data);
   });
 });
 
 app.listen('3000', err => {
   if (err) {
-    console.log("Couldn't connect to port 3000");
+    console.log("Couldn't connect to port:3000");
     return false;
   }
-  console.log('Server is running at port 3000');
+  console.log('Server is running at port:3000');
 });

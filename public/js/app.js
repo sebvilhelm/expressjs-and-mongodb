@@ -87,7 +87,7 @@ function createUser() {
 }
 
 function deleteUser(id) {
-  doAjax('GET', 'api-delete-user.php?id=' + id, function(res) {
+  doAjax('GET', 'delete-user/' + id, function(res) {
     console.log(res);
   });
 }
@@ -140,8 +140,7 @@ function showUsers() {
 }
 
 function showUserInfoToEdit(id) {
-  doAjax('POST', 'api-get-userinfo.php?id=' + id, function(res) {
-    // SHOULD BE GET REQUEST
+  doAjax('GET', 'get-user/' + id, function(res) {
     var jUser = JSON.parse(res);
     inputEditUserName.value = jUser.name;
     inputEditUserLastName.value = jUser.lastName;
@@ -165,8 +164,9 @@ function showUserInfoToEdit(id) {
 }
 
 function showCurrentUserInfo() {
-  var sUserId = jCurrentUser.id;
-  doAjax('GET', 'api-get-userinfo.php?id=' + sUserId, function(res) {
+  // var sUserId = jCurrentUser.id;
+  var sUserId = '23894hsr';
+  doAjax('GET', '/get-user/' + sUserId, function(res) {
     var jUser = JSON.parse(res);
     var sId = jUser.id;
     var sFullName = jUser.name + ' ' + jUser.lastName;
