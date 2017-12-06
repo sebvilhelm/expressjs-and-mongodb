@@ -1,6 +1,8 @@
 const fs = require('fs');
 const user = {};
 
+/***********************************************/
+
 user.loginUser = (jUser, fCallback) => {
   fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
     if (err) {
@@ -34,6 +36,10 @@ user.loginUser = (jUser, fCallback) => {
   });
 };
 
+/***********************************************/
+
+/***********************************************/
+
 user.getAllUsers = fCallback => {
   // Read users from users.txt
   fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
@@ -51,6 +57,10 @@ user.getAllUsers = fCallback => {
     return fCallback(false, ajUsers);
   });
 };
+
+/***********************************************/
+
+/***********************************************/
 
 user.getUser = (sId, fCallback) => {
   fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
@@ -74,6 +84,10 @@ user.getUser = (sId, fCallback) => {
     }
   });
 };
+
+/***********************************************/
+
+/***********************************************/
 
 user.deleteUser = (sId, fCallback) => {
   fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
@@ -105,5 +119,7 @@ user.deleteUser = (sId, fCallback) => {
     }
   });
 };
+
+/***********************************************/
 
 module.exports = user;
