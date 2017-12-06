@@ -26,7 +26,7 @@ function loginUser() {
   var jFrm = new FormData(frmLogin);
   doAjax(
     'POST',
-    'api-login-user.php',
+    '/login-user/',
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
@@ -164,8 +164,7 @@ function showUserInfoToEdit(id) {
 }
 
 function showCurrentUserInfo() {
-  // var sUserId = jCurrentUser.id;
-  var sUserId = '23894hsr';
+  var sUserId = jCurrentUser.id;
   doAjax('GET', '/get-user/' + sUserId, function(res) {
     var jUser = JSON.parse(res);
     var sId = jUser.id;
