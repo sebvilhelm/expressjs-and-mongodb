@@ -1,0 +1,1 @@
+[{"name":"Sebastian","id":"59e4883657dd7","lastName":"Nielsen","password":"hunter1","email":"seb@frankly.dk","phone":"11223344","position":"{\"lat\":55.7066915,\"lng\":12.536275499999999}","isAdmin":true,"img":"img\/users\/user-59e4883657dd7.jpg"}]

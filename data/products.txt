@@ -1,0 +1,1 @@
+[{"id":"59d64be1babbf","name":"Google Pixel","price":"2.99","inventory":"5","img":"img\/products\/product-59d64be1babbf.jpeg"}]
