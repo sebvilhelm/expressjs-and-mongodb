@@ -200,7 +200,6 @@ function showCurrentUserInfo() {
               </dl>\
               <button class="btnDeleteUser">delete</button>\
               <button class="btnEditUser">edit</button>\
-              <button id="btnSubscribe">subscribe to the newsletter</button>\
             </li>';
     userProfile.innerHTML = sUserList;
   });
@@ -211,7 +210,7 @@ function editUser() {
   jFrm.append('id', sUserIdToEdit);
   doAjax(
     'POST',
-    'api-edit-user.php',
+    '/update-user/',
     function(res) {
       console.log(res); //TODO: FRONTEND ERROR HANDLING
       showUsers();

@@ -3,6 +3,8 @@ const user = {};
 
 /***********************************************/
 
+/***********************************************/
+
 user.saveUser = (jUserInfo, fCallback) => {
   /******************************/
   // SLET TIL MONGO!!!!
@@ -46,15 +48,52 @@ user.saveUser = (jUserInfo, fCallback) => {
     if (err) {
       return fCallback(true);
     }
-    const jUserCreated = { ...jUser };
-    delete jUserCreated.password;
-    delete jUserCreated.position;
-    delete jUserCreated.img;
-    delete jUserCreated.phone;
-    delete jUserCreated.name;
-    delete jUserCreated.lastName;
-    delete jUserCreated.email;
-    return fCallback(false, jUserCreated);
+    const jUserUpdated = { ...jUser };
+    delete jUserUpdated.password;
+    delete jUserUpdated.position;
+    delete jUserUpdated.img;
+    delete jUserUpdated.phone;
+    delete jUserUpdated.name;
+    delete jUserUpdated.lastName;
+    delete jUserUpdated.email;
+    return fCallback(false, jUserUpdated);
+  });
+};
+
+/***********************************************/
+
+/***********************************************/
+
+user.updateUser = (jUserInfo, fCallback) => {
+  const jUser = {
+    id: jUserInfo.id,
+    name: jUserInfo.userName,
+    lastName: jUserInfo.userLastName,
+    password: jUserInfo.userPassword,
+    email: jUserInfo.userEmail,
+    phone: jUserInfo.userPhone,
+    position: jUserInfo.userPosition
+  };
+  jUser.isAdmin = jUserInfo.userIsAdmin ? true : false;
+
+  // Check if the image size is above 0
+  if (jUserInfo.userImg.size > 0) {
+    // If so, define a new path and fs.rename
+    const imgName = 'user-' + userId + '.jpg';
+    const imgPath = '/img/users/' + imgName;
+    const imgPathAbsolute = __dirname + '/../public' + imgPath;
+    jUser.img = imgPath;
+    fs.renameSync(jUserInfo.userImg.path, imgPathAbsolute);
+  }
+
+  const ajUsers = [jUser];
+
+  const sajUsers = JSON.stringify(ajUsers);
+  fs.writeFile(__dirname + '/../data/users.txt', sajUsers, err => {
+    if (err) {
+      return fCallback(true);
+    }
+    return fCallback(false);
   });
 };
 
@@ -178,6 +217,8 @@ user.deleteUser = (sId, fCallback) => {
     }
   });
 };
+
+/***********************************************/
 
 /***********************************************/
 

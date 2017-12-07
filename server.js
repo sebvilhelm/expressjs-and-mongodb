@@ -98,6 +98,26 @@ app.post('/save-user/', (req, res) => {
 
 /***********************************************/
 
+app.post('/update-user/', (req, res) => {
+  const jUser = req.fields;
+  const file = req.files;
+  jUser.userImg = file.userImg;
+
+  user.updateUser(jUser, err => {
+    const jRes = {
+      status: 'success'
+    };
+    if (err) {
+      jRes.status = 'error';
+    }
+    res.json(jRes);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
 app.listen('3000', err => {
   if (err) {
     console.log("Couldn't connect to port:3000");
