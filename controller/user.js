@@ -16,24 +16,45 @@ user.saveUser = (jUserInfo, fCallback) => {
   };
   /******************************/
 
-  const ajUser = [
-    {
-      id: ID(),
-      name: jUserInfo.userName,
-      lastName: jUserInfo.userLastName,
-      password: jUserInfo.userPassword,
-      email: jUserInfo.userEmail,
-      phone: jUserInfo.userPhone,
-      position: jUserInfo.userPosition
-    }
-  ];
+  const userId = ID();
 
-  const sajUser = JSON.stringify(ajUser);
-  fs.writeFile(__dirname + '/../data/users.txt', sajUser, err => {
+  const jUser = {
+    id: userId,
+    name: jUserInfo.userName,
+    lastName: jUserInfo.userLastName,
+    password: jUserInfo.userPassword,
+    email: jUserInfo.userEmail,
+    phone: jUserInfo.userPhone,
+    position: jUserInfo.userPosition,
+    isAdmin: true
+  };
+
+  // Check if the image size is above 0
+  if (jUserInfo.userImg.size > 0) {
+    // If so, define a new path and fs.rename
+    const imgName = 'user-' + userId + '.jpg';
+    const imgPath = '/img/users/' + imgName;
+    const imgPathAbsolute = __dirname + '/../public' + imgPath;
+    jUser.img = imgPath;
+    fs.renameSync(jUserInfo.userImg.path, imgPathAbsolute);
+  }
+
+  const ajUsers = [jUser];
+
+  const sajUsers = JSON.stringify(ajUsers);
+  fs.writeFile(__dirname + '/../data/users.txt', sajUsers, err => {
     if (err) {
       return fCallback(true);
     }
-    return fCallback(false);
+    const jUserCreated = { ...jUser };
+    delete jUserCreated.password;
+    delete jUserCreated.position;
+    delete jUserCreated.img;
+    delete jUserCreated.phone;
+    delete jUserCreated.name;
+    delete jUserCreated.lastName;
+    delete jUserCreated.email;
+    return fCallback(false, jUserCreated);
   });
 };
 

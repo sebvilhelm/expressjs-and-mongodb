@@ -79,13 +79,18 @@ app.post('/login/', (req, res) => {
 
 app.post('/save-user/', (req, res) => {
   const jUser = req.fields;
-  // TODO: Save that file!
   const file = req.files;
-  user.saveUser(jUser, err => {
+
+  jUser.userImg = file.userImg;
+  user.saveUser(jUser, (err, jUserCreated) => {
+    const jRes = {
+      status: 'success',
+      user: jUserCreated
+    };
     if (err) {
-      res.send('no');
+      jRes.status = 'error';
     }
-    res.send('yay');
+    res.json(jRes);
   });
 });
 

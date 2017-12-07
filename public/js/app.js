@@ -72,16 +72,17 @@ function createUser() {
     'POST',
     '/save-user/',
     function(res) {
-      console.log(res);
-      /* var jRes = JSON.parse(res);
+      var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
+        jCurrentUser.id = jRes.user.id;
+        jCurrentUser.isAdmin = jRes.user.isAdmin;
         console.log('user created');
         menu.classList.remove('hide');
         showCurrentUserInfo();
         showPage('pageProfile');
       } else {
         console.log('error');
-      } */
+      }
     },
     jFrm
   );
