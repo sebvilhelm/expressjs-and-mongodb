@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const mongodb = require('mongodb');
 const formidable = require('express-formidable');
 const user = require('./controller/user');
