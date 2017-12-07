@@ -142,7 +142,7 @@ function showUsers() {
 }
 
 function showUserInfoToEdit(id) {
-  doAjax('GET', 'get-user/' + id, function(res) {
+  doAjax('GET', '/get-user/' + id, function(res) {
     var jUser = JSON.parse(res);
     inputEditUserName.value = jUser.name;
     inputEditUserLastName.value = jUser.lastName;
@@ -220,17 +220,9 @@ function editUser() {
   );
 }
 
-function subscribeNewsletter() {
-  doAjax('GET', 'api-subscribe-newsletter.php?id=' + jCurrentUser.id, function(
-    res
-  ) {
-    console.log(res);
-  });
-}
-
 // PRODUCTS CRUD
 function showProducts() {
-  doAjax('GET', 'api-show-products.php', function(res) {
+  doAjax('GET', '/get-products/', function(res) {
     var ajProducts = JSON.parse(res);
     var sProductList = '';
     for (var i = 0; i < ajProducts.length; i++) {
@@ -282,7 +274,7 @@ function createProduct() {
   var jFrm = new FormData(frmAddProduct);
   doAjax(
     'POST',
-    'api-create-product.php',
+    '/save-product/',
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
@@ -297,13 +289,13 @@ function createProduct() {
 }
 
 function deleteProduct(id) {
-  doAjax('GET', 'api-delete-product.php?id=' + id, function(res) {
+  doAjax('GET', '/delete-product/' + id, function(res) {
     console.log(res);
   });
 }
 
 function showProductInfoToEdit(id) {
-  doAjax('GET', 'api-get-productinfo.php?id=' + id, function(res) {
+  doAjax('GET', '/get-product/' + id, function(res) {
     var jProduct = JSON.parse(res);
     inputEditProductName.value = jProduct.name;
     inputEditProductPrice.value = jProduct.price;
@@ -318,7 +310,7 @@ function editProduct() {
   jFrm.append('id', sProductIdToEdit);
   doAjax(
     'POST',
-    'api-edit-product.php',
+    '/update-product/',
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
@@ -333,7 +325,7 @@ function editProduct() {
 
 // BUY PRODUCT
 function buyProduct(id) {
-  doAjax('GET', 'api-buy-product.php?id=' + id, function(res) {
+  doAjax('GET', '/buy-product/' + id, function(res) {
     var jRes = JSON.parse(res);
     var jNotifOptions = {
       title: 'Oops!',
