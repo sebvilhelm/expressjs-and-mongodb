@@ -1,10 +1,23 @@
 const express = require('express');
-const mongodb = require('mongodb');
+const mongo = require('mongodb').MongoClient;
 const formidable = require('express-formidable');
 const user = require('./controller/user');
 const product = require('./controller/product');
 
 const app = express();
+
+global.db = null;
+const sDatabasePath = 'mongodb://localhost:27017/dbexam';
+
+mongo.connect( sDatabasePath , (err , db) => {
+  if( err ){
+    console.log("Couldn't connect to database");
+    return false;
+  }
+  global.db = db;
+
+  console.log('Connected to database!');
+});
 
 app.use(express.static('public'));
 app.use(formidable());
@@ -216,5 +229,6 @@ app.listen('3000', err => {
     return false;
   }
   console.log('Server is running at port:3000');
+  return true;
 });
 /***********************************************/

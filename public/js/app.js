@@ -150,8 +150,8 @@ function showUserInfoToEdit(id) {
     inputEditUserEmail.value = jUser.email;
     inputEditUserPhone.value = jUser.phone;
 
-    sUserIdToEdit = jUser.id;
-
+    sUserIdToEdit = jUser._id;
+      
     var jThisUserPosition = JSON.parse(jUser.position);
     var userMap = document.getElementById('map');
 
@@ -169,7 +169,7 @@ function showCurrentUserInfo() {
   var sUserId = jCurrentUser.id;
   doAjax('GET', '/get-user/' + sUserId, function(res) {
     var jUser = JSON.parse(res);
-    var sId = jUser.id;
+    var sId = jUser._id;
     var sFullName = jUser.name + ' ' + jUser.lastName;
     var sPhone = jUser.phone;
     var sEmail = jUser.email;

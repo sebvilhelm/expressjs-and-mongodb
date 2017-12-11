@@ -1,27 +1,16 @@
 const fs = require('fs');
 const user = {};
 
+const mongo = require('mongodb').MongoClient;
+const sDatabasePath = 'mongodb://localhost:27017/dbexam';
+
 /***********************************************/
 
 /***********************************************/
 
 user.saveUser = (jUserInfo, fCallback) => {
-  /******************************/
-  // SLET TIL MONGO!!!!
-  const ID = function() {
-    return (
-      '_' +
-      Math.random()
-        .toString(36)
-        .substr(2, 9)
-    );
-  };
-  /******************************/
-
-  const userId = ID();
 
   const jUser = {
-    id: userId,
     name: jUserInfo.userName,
     lastName: jUserInfo.userLastName,
     password: jUserInfo.userPassword,
@@ -34,29 +23,18 @@ user.saveUser = (jUserInfo, fCallback) => {
   // Check if the image size is above 0
   if (jUserInfo.userImg.size > 0) {
     // If so, define a new path and fs.rename
-    const imgName = 'user-' + userId + '.jpg';
+    const imgName = 'user-' + jUser.name +'-'+ jUser.lastName + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
     fs.renameSync(jUserInfo.userImg.path, imgPathAbsolute);
   }
 
-  const ajUsers = [jUser];
-
-  const sajUsers = JSON.stringify(ajUsers);
-  fs.writeFile(__dirname + '/../data/users.txt', sajUsers, err => {
+  global.db.collection('users').insertOne(jUser, (err, result) => {
     if (err) {
       return fCallback(true);
     }
-    const jUserUpdated = { ...jUser };
-    delete jUserUpdated.password;
-    delete jUserUpdated.position;
-    delete jUserUpdated.img;
-    delete jUserUpdated.phone;
-    delete jUserUpdated.name;
-    delete jUserUpdated.lastName;
-    delete jUserUpdated.email;
-    return fCallback(false, jUserUpdated);
+    return fCallback(false, jUser);
   });
 };
 
