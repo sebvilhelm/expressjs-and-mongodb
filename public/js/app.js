@@ -30,7 +30,7 @@ function loginUser() {
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
-        jCurrentUser._id = jRes.user._id;
+        jCurrentUser.id = jRes.user._id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         menu.classList.remove('hide');
         showCurrentUserInfo();
@@ -74,7 +74,7 @@ function createUser() {
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
-        jCurrentUser.id = jRes.user._id;
+        jCurrentUser.id = jRes.user.id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         console.log('user created');
         menu.classList.remove('hide');
@@ -166,7 +166,7 @@ function showUserInfoToEdit(id) {
 }
 
 function showCurrentUserInfo() {
-  var sUserId = jCurrentUser._id;
+  var sUserId = jCurrentUser.id;
   doAjax('GET', '/get-user/' + sUserId, function(res) {
     var jUser = JSON.parse(res);
     var sId = jUser._id;

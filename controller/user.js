@@ -23,6 +23,7 @@ user.saveUser = (jUser, fCallback) => {
     if (err) {
       return fCallback(true);
     }
+    jUser._id = result.insertedId;
     return fCallback(false, jUser);
   });
 };
