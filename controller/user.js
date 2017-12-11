@@ -1,15 +1,11 @@
 const fs = require('fs');
 const user = {};
 
-const mongo = require('mongodb').MongoClient;
-const sDatabasePath = 'mongodb://localhost:27017/dbexam';
-
 /***********************************************/
 
 /***********************************************/
 
 user.saveUser = (jUserInfo, fCallback) => {
-
   const jUser = {
     name: jUserInfo.userName,
     lastName: jUserInfo.userLastName,
@@ -23,7 +19,7 @@ user.saveUser = (jUserInfo, fCallback) => {
   // Check if the image size is above 0
   if (jUserInfo.userImg.size > 0) {
     // If so, define a new path and fs.rename
-    const imgName = 'user-' + jUser.name +'-'+ jUser.lastName + '.jpg';
+    const imgName = 'user-' + jUser.name + '-' + jUser.lastName + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
@@ -117,8 +113,33 @@ user.loginUser = (jUser, fCallback) => {
 /***********************************************/
 
 user.getAllUsers = fCallback => {
+  global.db
+    .collection('users')
+    .find()
+    .toArray((err, data) => {
+      if (err) {
+        return fCallback(true);
+      }
+      // Parse data
+      console.log(data);
+
+      data.forEach(user => {
+        delete user.password;
+        delete user.position;
+      });
+
+      return fCallback(false, data);
+      /* const ajUsers = JSON.parse(data);
+      // Remove sensitive data
+      ajUsers.forEach(user => {
+        delete user.password;
+        delete user.position;
+      });
+      // Parse send data as array
+      return fCallback(false, ajUsers); */
+    });
   // Read users from users.txt
-  fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
+  /* fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
     if (err) {
       return fCallback(true);
     }
@@ -131,7 +152,7 @@ user.getAllUsers = fCallback => {
     });
     // Parse send data as array
     return fCallback(false, ajUsers);
-  });
+  }); */
 };
 
 /***********************************************/

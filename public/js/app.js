@@ -100,7 +100,7 @@ function showUsers() {
     var sUserList = '';
 
     for (var i = 0; i < ajUsers.length; i++) {
-      var sId = ajUsers[i].id;
+      var sId = ajUsers[i]._id;
       var sFullName = ajUsers[i].name + ' ' + ajUsers[i].lastName;
       var sPhone = ajUsers[i].phone;
       var sEmail = ajUsers[i].email;
@@ -151,7 +151,7 @@ function showUserInfoToEdit(id) {
     inputEditUserPhone.value = jUser.phone;
 
     sUserIdToEdit = jUser._id;
-      
+
     var jThisUserPosition = JSON.parse(jUser.position);
     var userMap = document.getElementById('map');
 
