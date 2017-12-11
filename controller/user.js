@@ -1,4 +1,5 @@
 const fs = require('fs');
+const ObjectId = require('mongodb').ObjectId;
 const user = {};
 
 /***********************************************/
@@ -120,39 +121,14 @@ user.getAllUsers = fCallback => {
       if (err) {
         return fCallback(true);
       }
-      // Parse data
-      console.log(data);
-
+      // Remove sensitive data
       data.forEach(user => {
         delete user.password;
         delete user.position;
       });
 
       return fCallback(false, data);
-      /* const ajUsers = JSON.parse(data);
-      // Remove sensitive data
-      ajUsers.forEach(user => {
-        delete user.password;
-        delete user.position;
-      });
-      // Parse send data as array
-      return fCallback(false, ajUsers); */
     });
-  // Read users from users.txt
-  /* fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
-    if (err) {
-      return fCallback(true);
-    }
-    // Parse data
-    const ajUsers = JSON.parse(data);
-    // Remove sensitive data
-    ajUsers.forEach(user => {
-      delete user.password;
-      delete user.position;
-    });
-    // Parse send data as array
-    return fCallback(false, ajUsers);
-  }); */
 };
 
 /***********************************************/
@@ -160,25 +136,16 @@ user.getAllUsers = fCallback => {
 /***********************************************/
 
 user.getUser = (sId, fCallback) => {
-  fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
+  const idQuery = new ObjectId(sId);
+  global.db.collection('users').findOne(idQuery, (err, data) => {
     if (err) {
       return fCallback(true);
     }
-    // Parse data
-    const ajUsers = JSON.parse(data);
-    // Find a user with matching id
-    let userFound = false;
-    ajUsers.forEach(user => {
-      if (user.id === sId) {
-        // if the ids match, send along with the callback
-        userFound = true;
-        return fCallback(false, user);
-      }
-    });
-    // Else, return error
-    if (!userFound) {
-      return fCallback(true);
-    }
+    console.log(data);
+    // Remove sensitive data
+    delete data.password;
+    delete data.position;
+    return fCallback(false, data);
   });
 };
 
