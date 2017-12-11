@@ -95,7 +95,6 @@ app.post('/login/', (req, res) => {
 
 app.post('/save-user/', (req, res) => {
   const jUser = {
-    id: req.fields.id,
     name: req.fields.userName,
     lastName: req.fields.userLastName,
     password: req.fields.userPassword,

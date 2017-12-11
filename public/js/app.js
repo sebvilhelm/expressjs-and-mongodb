@@ -73,13 +73,16 @@ function createUser() {
     '/save-user/',
     function(res) {
       var jRes = JSON.parse(res);
-      if (jRes.status == 'success') {
-        jCurrentUser.id = jRes.user.id;
+      if (jRes.status == 'success' && !jCurrentUser.id) {
+        jCurrentUser.id = jRes.user._id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         console.log('user created');
         menu.classList.remove('hide');
         showCurrentUserInfo();
         showPage('pageProfile');
+      } else if (jRes.status == 'success') {
+        showUsers();
+        showPage('pageAllUsers');
       } else {
         console.log('error');
       }
@@ -153,6 +156,7 @@ function showUserInfoToEdit(id) {
     sUserIdToEdit = jUser._id;
 
     var jThisUserPosition = JSON.parse(jUser.position);
+
     var userMap = document.getElementById('map');
 
     initMap(jThisUserPosition, userMap);
