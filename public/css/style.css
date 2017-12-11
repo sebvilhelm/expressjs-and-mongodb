@@ -1,9 +1,9 @@
 body {
-  padding:0;
+  padding: 0;
   margin: 0;
   display: grid;
   min-height: 100vh;
-  grid-template-rows: min-content;
+  grid-template-rows: min-content 1fr;
   font-family: 'Raleway', Arial, Helvetica, sans-serif;
   font-size: 16px;
   background: #fafafa;
@@ -13,7 +13,7 @@ body {
 h1 {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-weight: 400;
-  letter-spacing: .2em;
+  letter-spacing: 0.2em;
   font-variant-ligatures: none;
   font-size: 3em;
   text-transform: uppercase;
@@ -27,7 +27,7 @@ main {
 .page {
   height: 100%;
   padding: 10px 30px;
-  max-width:1200px;
+  max-width: 1200px;
   margin: 0 auto;
   background: #fff;
   box-sizing: border-box;
@@ -70,7 +70,8 @@ dl {
   grid-gap: 10px;
 }
 
-dt, label {
+dt,
+label {
   font-weight: 600;
 }
 
@@ -85,19 +86,19 @@ form {
   background: #e6ceff;
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 2px 1px 5px rgba(0,0,0,0.3);
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 label {
   display: block;
-  margin: .5em 0;
-  font-size: .8em;
+  margin: 0.5em 0;
+  font-size: 0.8em;
 }
 
 input {
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   display: block;
-  width:100%;
+  width: 100%;
   box-sizing: border-box;
   font-size: 1em;
 }
@@ -113,12 +114,12 @@ button {
   background: #b39ddb;
   border: 3px solid #b39ddb;
   border-radius: 10px;
-  font-size: .8em;
+  font-size: 0.8em;
   text-transform: uppercase;
-  letter-spacing: .1em;
-  padding: .5em 1em;
-  margin: .2em .5em;
-  transition: background .3s;
+  letter-spacing: 0.1em;
+  padding: 0.5em 1em;
+  margin: 0.2em 0.5em;
+  transition: background 0.3s;
 }
 
 button:hover,
@@ -131,7 +132,7 @@ button:focus {
   background: #e6ceff;
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 2px 1px 5px rgba(0,0,0,0.3);
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 #map,
