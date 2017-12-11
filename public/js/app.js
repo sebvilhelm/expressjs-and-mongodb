@@ -74,7 +74,7 @@ function createUser() {
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
-        jCurrentUser.id = jRes.user.id;
+        jCurrentUser.id = jRes.user._id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         console.log('user created');
         menu.classList.remove('hide');

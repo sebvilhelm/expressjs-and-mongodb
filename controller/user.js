@@ -6,26 +6,18 @@ const user = {};
 
 /***********************************************/
 
-user.saveUser = (jUserInfo, fCallback) => {
-  const jUser = {
-    name: jUserInfo.userName,
-    lastName: jUserInfo.userLastName,
-    password: jUserInfo.userPassword,
-    email: jUserInfo.userEmail,
-    phone: jUserInfo.userPhone,
-    position: jUserInfo.userPosition,
-    isAdmin: true
-  };
-
+user.saveUser = (jUser, fCallback) => {
   // Check if the image size is above 0
-  if (jUserInfo.userImg.size > 0) {
+  if (jUser.userImg.size > 0) {
     // If so, define a new path and fs.rename
     const imgName = 'user-' + jUser.name + '-' + jUser.lastName + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
-    fs.renameSync(jUserInfo.userImg.path, imgPathAbsolute);
+    fs.renameSync(jUser.userImg.path, imgPathAbsolute);
   }
+
+  delete jUser.userImg;
 
   global.db.collection('users').insertOne(jUser, (err, result) => {
     if (err) {
@@ -39,37 +31,30 @@ user.saveUser = (jUserInfo, fCallback) => {
 
 /***********************************************/
 
-user.updateUser = (jUserInfo, fCallback) => {
-  const jUser = {
-    id: jUserInfo.id,
-    name: jUserInfo.userName,
-    lastName: jUserInfo.userLastName,
-    password: jUserInfo.userPassword,
-    email: jUserInfo.userEmail,
-    phone: jUserInfo.userPhone,
-    position: jUserInfo.userPosition
-  };
-  jUser.isAdmin = jUserInfo.userIsAdmin ? true : false;
+user.updateUser = (jUser, fCallback) => {
+  const userId = new ObjectId(jUser.id);
 
   // Check if the image size is above 0
-  if (jUserInfo.userImg.size > 0) {
+  if (jUser.userImg.size > 0) {
     // If so, define a new path and fs.rename
-    const imgName = 'user-' + userId + '.jpg';
+    const imgName = 'user-' + jUser.name + '-' + jUser.lastName + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
-    fs.renameSync(jUserInfo.userImg.path, imgPathAbsolute);
+    fs.renameSync(jUser.userImg.path, imgPathAbsolute);
   }
 
-  const ajUsers = [jUser];
+  delete jUser.userImg;
+  delete jUser.id;
 
-  const sajUsers = JSON.stringify(ajUsers);
-  fs.writeFile(__dirname + '/../data/users.txt', sajUsers, err => {
-    if (err) {
-      return fCallback(true);
-    }
-    return fCallback(false);
-  });
+  global.db
+    .collection('users')
+    .updateOne({ _id: userId }, { $set: jUser }, (err, result) => {
+      if (err) {
+        return fCallback(true);
+      }
+      return fCallback(false);
+    });
 };
 
 /***********************************************/

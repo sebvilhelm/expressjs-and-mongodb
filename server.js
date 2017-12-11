@@ -94,10 +94,17 @@ app.post('/login/', (req, res) => {
 /***********************************************/
 
 app.post('/save-user/', (req, res) => {
-  const jUser = req.fields;
-  const file = req.files;
-
-  jUser.userImg = file.userImg;
+  const jUser = {
+    id: req.fields.id,
+    name: req.fields.userName,
+    lastName: req.fields.userLastName,
+    password: req.fields.userPassword,
+    email: req.fields.userEmail,
+    phone: req.fields.userPhone,
+    position: req.fields.userPosition,
+    userImg: req.files.userImg,
+    isAdmin: true
+  };
   user.saveUser(jUser, (err, jUserCreated) => {
     const jRes = {
       status: 'success',
@@ -115,9 +122,17 @@ app.post('/save-user/', (req, res) => {
 /***********************************************/
 
 app.post('/update-user/', (req, res) => {
-  const jUser = req.fields;
-  const file = req.files;
-  jUser.userImg = file.userImg;
+  const jUser = {
+    id: req.fields.id,
+    name: req.fields.userName,
+    lastName: req.fields.userLastName,
+    password: req.fields.userPassword,
+    email: req.fields.userEmail,
+    phone: req.fields.userPhone,
+    position: req.fields.userPosition,
+    userImg: req.files.userImg,
+    isAdmin: req.fields.userIsAdmin ? true : false
+  };
 
   user.updateUser(jUser, err => {
     const jRes = {
