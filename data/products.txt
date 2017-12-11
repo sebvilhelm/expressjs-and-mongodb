@@ -1,1 +1,1 @@
-[{"id":"59d64be1babbf","name":"Google Pixel","price":"2.99","inventory":"5","img":"img\/products\/product-59d64be1babbf.jpeg"}]
+[{"id":"_xmtlf5x9f","name":"new","price":"123","inventory":0,"img":"/img/products/product-_xmtlf5x9f.jpg"}]

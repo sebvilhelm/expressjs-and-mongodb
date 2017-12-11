@@ -1,1 +1,1 @@
-[{"id":"_ov3svishk","name":"asd","lastName":"asd","password":"sdf","email":"sdf","phone":"sfg","position":"{\"lat\":55.7067632,\"lng\":12.5361966}","isAdmin":true}]
+[{"id":"_w4erko1ps","name":"a","lastName":"b","password":"password","email":"d","phone":"e","position":"{\"lat\":55.706393399999996,\"lng\":12.5393878}","isAdmin":true,"img":"/img/users/user-_w4erko1ps.jpg"}]

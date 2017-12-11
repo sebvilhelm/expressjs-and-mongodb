@@ -2,6 +2,7 @@ const express = require('express');
 const mongodb = require('mongodb');
 const formidable = require('express-formidable');
 const user = require('./controller/user');
+const product = require('./controller/product');
 
 const app = express();
 
@@ -15,13 +16,13 @@ app.get('/', (req, res) => {
 });
 
 /***********************************************/
-
+// USERS
 /***********************************************/
 
-app.get('/get-users', (req, res) => {
+app.get('/get-users/', (req, res) => {
   user.getAllUsers((err, data) => {
     if (err) {
-      console.log('oops');
+      console.log(err);
       return res.json(false);
     }
     res.json(data);
@@ -109,6 +110,98 @@ app.post('/update-user/', (req, res) => {
     if (err) {
       jRes.status = 'error';
     }
+    res.json(jRes);
+  });
+});
+
+/***********************************************/
+// Products
+/***********************************************/
+
+app.get('/get-products/', (req, res) => {
+  product.getAllProducts((err, data) => {
+    if (err) {
+      console.log(err);
+      return res.json(false);
+    }
+    res.json(data);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.post('/save-product/', (req, res) => {
+  const jProduct = req.fields;
+  const file = req.files;
+
+  jProduct.productImg = file.productImg;
+  product.saveProduct(jProduct, (err, jProductCreated) => {
+    const jRes = {
+      status: 'success',
+      products: jProductCreated
+    };
+    if (err) {
+      jRes.status = 'error';
+    }
+    res.json(jRes);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.get('/get-product/:id', (req, res) => {
+  const id = req.params.id;
+  product.getProduct(id, (err, data) => {
+    res.json(data);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.post('/update-product/', (req, res) => {
+  const jProduct = req.fields;
+  const file = req.files;
+  jProduct.productImg = file.productImg;
+
+  product.updateProduct(jProduct, err => {
+    const jRes = {
+      status: 'success'
+    };
+    if (err) {
+      jRes.status = 'error';
+    }
+    res.json(jRes);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.get('/delete-product/:id', (req, res) => {
+  const id = req.params.id;
+  product.deleteProduct(id, err => {
+    if (err) {
+      return res.send("Couldn't delete the product");
+    }
+    res.send('product deleted');
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.get('/buy-product/:id', (req, res) => {
+  const id = req.params.id;
+  product.buyProduct(id, (err, jResponseFromController) => {
+    const jRes = jResponseFromController || { status: 'error' };
     res.json(jRes);
   });
 });

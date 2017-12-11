@@ -333,11 +333,11 @@ function buyProduct(id) {
     };
     if (jRes.status == 'success') {
       // Write notifications message and properties
-      var sMessage = 'You bought a ' + jRes.productName;
+      var sMessage = 'You bought a ' + jRes.name;
       jNotifOptions = {
         title: 'Congratulations',
         message: sMessage,
-        sound: 'sound_cash.mp3',
+        sound: 'sound/sound_cash.mp3',
         icon: 'img/icons/icon_dollar.png'
       };
       // change inventory counter
@@ -345,11 +345,11 @@ function buyProduct(id) {
       var inventoryCounter = document.getElementById(sIdSelector);
       inventoryCounter.innerHTML = jRes.newInventory;
     } else if (jRes.status == 'noProducts') {
-      var sMessage = 'We ran out of ' + jRes.productName;
+      var sMessage = 'We ran out of ' + jRes.name;
       jNotifOptions = {
         title: 'Oh no!',
         message: sMessage,
-        sound: 'sound_trombone.mp3',
+        sound: 'sound/sound_trombone.mp3',
         icon: 'img/icons/icon_sad.png'
       };
     } else {
