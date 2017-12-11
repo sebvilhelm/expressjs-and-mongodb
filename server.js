@@ -9,8 +9,8 @@ const app = express();
 global.db = null;
 const sDatabasePath = 'mongodb://localhost:27017/dbexam';
 
-mongo.connect( sDatabasePath , (err , db) => {
-  if( err ){
+mongo.connect(sDatabasePath, (err, db) => {
+  if (err) {
     console.log("Couldn't connect to database");
     return false;
   }
@@ -72,7 +72,10 @@ app.get('/delete-user/:id', (req, res) => {
 /***********************************************/
 
 app.post('/login/', (req, res) => {
-  const jUserLogin = req.fields;
+  const jUserLogin = {
+    email: req.fields.userEmail,
+    password: req.fields.userPassword
+  };
   user.loginUser(jUserLogin, (err, userData) => {
     const response = {
       status: 'err'

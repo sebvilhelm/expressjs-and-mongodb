@@ -77,35 +77,18 @@ user.updateUser = (jUserInfo, fCallback) => {
 /***********************************************/
 
 user.loginUser = (jUser, fCallback) => {
-  fs.readFile(__dirname + '/../data/users.txt', 'utf8', (err, data) => {
+  global.db.collection('users').findOne(jUser, (err, user) => {
     if (err) {
       return fCallback(true);
     }
-    // Parse data
-    const ajUsers = JSON.parse(data);
-    // Find a user matching
-    let userFound = false;
-    ajUsers.forEach(user => {
-      if (
-        jUser.userEmail === user.email &&
-        jUser.userPassword === user.password
-      ) {
-        // if the user match, delete unnessesary info, and send along with the callback
-        userFound = true;
-        delete user.password;
-        delete user.position;
-        delete user.img;
-        delete user.phone;
-        delete user.name;
-        delete user.lastName;
-        delete user.email;
-        return fCallback(false, user);
-      }
-    });
-    // Else, return error
-    if (!userFound) {
-      return fCallback(true);
-    }
+    delete user.password;
+    delete user.position;
+    delete user.img;
+    delete user.phone;
+    delete user.name;
+    delete user.lastName;
+    delete user.email;
+    return fCallback(false, user);
   });
 };
 
@@ -141,7 +124,6 @@ user.getUser = (sId, fCallback) => {
     if (err) {
       return fCallback(true);
     }
-    console.log(data);
     // Remove sensitive data
     delete data.password;
     delete data.position;

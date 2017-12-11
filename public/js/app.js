@@ -30,7 +30,7 @@ function loginUser() {
     function(res) {
       var jRes = JSON.parse(res);
       if (jRes.status == 'success') {
-        jCurrentUser.id = jRes.user.id;
+        jCurrentUser._id = jRes.user._id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         menu.classList.remove('hide');
         showCurrentUserInfo();
@@ -157,7 +157,7 @@ function showUserInfoToEdit(id) {
 
     initMap(jThisUserPosition, userMap);
 
-    if (jCurrentUser.isAdmin && jUser.isAdmin) {
+    if (jUser.isAdmin) {
       inputEditUserIsAdmin.checked = true;
     } else {
       inputEditUserIsAdmin.checked = false;
@@ -166,7 +166,7 @@ function showUserInfoToEdit(id) {
 }
 
 function showCurrentUserInfo() {
-  var sUserId = jCurrentUser.id;
+  var sUserId = jCurrentUser._id;
   doAjax('GET', '/get-user/' + sUserId, function(res) {
     var jUser = JSON.parse(res);
     var sId = jUser._id;
