@@ -66,6 +66,7 @@ app.get('/get-users/lng/:lng/lat/:lat', (req, res) => {
 app.get('/get-user/:id', (req, res) => {
   const id = req.params.id;
   user.getUser(id, (err, data) => {
+    console.log(data);
     res.json(data);
   });
 });

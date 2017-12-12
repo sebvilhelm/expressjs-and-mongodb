@@ -135,21 +135,43 @@ user.getUsersGeo = (aLocation, fCallback) => {
 
 user.getUser = (sId, fCallback) => {
   const idQuery = new ObjectId(sId);
-  global.db.collection('users').findOne(idQuery, (err, data) => {
+  global.db.collection('users').findOne(idQuery, (err, userData) => {
     if (err) {
       return fCallback(true);
     }
 
     // Transform GeoJSON to object
     const jLocationFormatted = {
-      lng: data.location.coordinates[0],
-      lat: data.location.coordinates[1]
+      lng: userData.location.coordinates[0],
+      lat: userData.location.coordinates[1]
     };
 
-    delete data.location;
-    data.location = jLocationFormatted;
+    delete userData.location;
+    userData.location = jLocationFormatted;
 
-    return fCallback(false, data);
+    global.db.collection('orders').aggregate(
+      [
+        {
+          $match: { userId: idQuery }
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'productId',
+            foreignField: '_id',
+            as: 'productInfo'
+          }
+        }
+      ],
+      (err, orderData) => {
+        if (err) {
+          console.log(err);
+          return fCallback(true);
+        }
+        userData.orders = orderData;
+        return fCallback(false, userData);
+      }
+    );
   });
 };
 

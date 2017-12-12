@@ -112,6 +112,12 @@ product.deleteProduct = (sId, fCallback) => {
 /***********************************************/
 
 product.buyProduct = (jOrder, fCallback) => {
+  const objectIdUser = new ObjectId(jOrder.userId);
+  const objectIdProduct = new ObjectId(jOrder.productId);
+  const jOrderNew = {
+    userId: objectIdUser,
+    productId: objectIdProduct
+  };
   const productIdQuery = new ObjectId(jOrder.productId);
   global.db.collection('products').findOne(productIdQuery, (err, product) => {
     if (product.inventory > 0) {
@@ -123,7 +129,7 @@ product.buyProduct = (jOrder, fCallback) => {
             console.log(err);
             return fCallback(true);
           }
-          global.db.collection('orders').insertOne(jOrder, err => {
+          global.db.collection('orders').insertOne(jOrderNew, err => {
             if (err) {
               console.log(err);
               return fCallback(true);

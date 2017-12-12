@@ -243,6 +243,17 @@ function showUserProfile(userId) {
               <button class="btnEditUser">edit</button>\
             </div>';
     userProfile.innerHTML = sUserList;
+
+    // Show orders
+    var ajOrders = jUser.orders;
+    var sOrderList = '';
+
+    for (var i = 0; i < ajOrders.length; i++) {
+      var orderInfo = ajOrders[i].productInfo[0];
+      sOrderList +=
+        '<li>Product Name: <strong>' + orderInfo.name + '</strong></li>';
+    }
+    orderList.innerHTML = sOrderList;
   });
 }
 
