@@ -254,7 +254,7 @@ function editUser() {
     'POST',
     '/update-user/',
     function(res) {
-      console.log(res); //TODO: FRONTEND ERROR HANDLING
+      console.log(res);
       showUsers();
       showPage('pageAllUsers');
     },
@@ -367,7 +367,7 @@ function editProduct() {
 
 // BUY PRODUCT
 function buyProduct(id) {
-  doAjax('GET', '/buy-product/' + id, function(res) {
+  doAjax('GET', '/buy-product/' + id + '/' + jCurrentUser.id, function(res) {
     var jRes = JSON.parse(res);
     var jNotifOptions = {
       title: 'Oops!',

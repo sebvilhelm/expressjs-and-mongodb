@@ -259,11 +259,16 @@ app.get('/delete-product/:id', (req, res) => {
 
 /***********************************************/
 
-app.get('/buy-product/:id', (req, res) => {
-  const id = req.params.id;
-  product.buyProduct(id, (err, jResponseFromController) => {
-    const jRes = jResponseFromController || { status: 'error' };
-    res.json(jRes);
+app.get('/buy-product/:productId/:userId', (req, res) => {
+  const jOrder = {
+    productId: req.params.productId,
+    userId: req.params.userId
+  };
+  product.buyProduct(jOrder, err => {
+    if (err) {
+      return res.json({ status: 'error' });
+    }
+    res.json({ status: 'success' });
   });
 });
 

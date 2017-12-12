@@ -111,53 +111,12 @@ product.deleteProduct = (sId, fCallback) => {
 
 /***********************************************/
 
-product.buyProduct = (sId, fCallback) => {
-  fs.readFile(__dirname + '/../data/products.txt', 'utf8', (err, data) => {
+product.buyProduct = (jOrder, fCallback) => {
+  global.db.collection('orders').insertOne(jOrder, err => {
     if (err) {
       return fCallback(true);
     }
-    // Parse data
-    const ajProducts = JSON.parse(data);
-    // Find a product with matching id
-    let productFound = false;
-    ajProducts.forEach((product, i) => {
-      if (product.id === sId) {
-        // if the ids match, create response object
-        const jRes = {
-          name: product.name
-        };
-        productFound = true;
-        // Check if there is inventory
-        if (product.inventory > 0) {
-          // Reduce the inventory by one
-          product.inventory--;
-          // write new inventory to response
-          jRes.newInventory = product.inventory;
-          jRes.status = 'success';
-          // and write the array back to the file
-          const sajProducts = JSON.stringify(ajProducts);
-          fs.writeFile(
-            __dirname + '/../data/products.txt',
-            sajProducts,
-            err => {
-              if (err) {
-                return fCallback(true);
-              }
-              return fCallback(false, jRes);
-            }
-          );
-        } else {
-          // If there is no more inventory
-          // return without errors, but with a status of 'noInventory'
-          jRes.status = 'noProducts';
-          return fCallback(false, jRes);
-        }
-      }
-    });
-    // If no product matched, return error
-    if (!productFound) {
-      return fCallback(true);
-    }
+    fCallback(false);
   });
 };
 
