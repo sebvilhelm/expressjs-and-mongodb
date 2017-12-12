@@ -1,5 +1,7 @@
 const fs = require('fs');
 const ObjectId = require('mongodb').ObjectId;
+const util = require('../util');
+
 const user = {};
 
 /***********************************************/
@@ -9,8 +11,9 @@ const user = {};
 user.saveUser = (jUser, fCallback) => {
   // Check if the image size is above 0
   if (jUser.userImg.size > 0) {
+    const imgId = util.createId();
     // If so, define a new path and fs.rename
-    const imgName = 'user-' + jUser.name + '-' + jUser.lastName + '.jpg';
+    const imgName = 'user-' + imgId + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
@@ -34,11 +37,11 @@ user.saveUser = (jUser, fCallback) => {
 
 user.updateUser = (jUser, fCallback) => {
   const userId = new ObjectId(jUser.id);
-
   // Check if the image size is above 0
   if (jUser.userImg.size > 0) {
+    const imgId = util.createId();
     // If so, define a new path and fs.rename
-    const imgName = 'user-' + jUser.name + '-' + jUser.lastName + '.jpg';
+    const imgName = 'user-' + imgId + '.jpg';
     const imgPath = '/img/users/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jUser.img = imgPath;
