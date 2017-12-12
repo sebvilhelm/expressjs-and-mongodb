@@ -197,8 +197,6 @@ function showUserInfoToEdit(id) {
 
     var userMap = document.getElementById('map');
 
-    console.log(jUser.location);
-
     initMap(jUser.location, userMap);
 
     if (jUser.isAdmin) {
@@ -519,7 +517,7 @@ function setMapIsReady() {
 }
 
 function getUserPosition(callback) {
-  var geoLocation = navigator.geolocation.getCurrentPosition(function(res) {
+  navigator.geolocation.getCurrentPosition(function(res) {
     jUserPosition = {
       lat: res.coords.latitude,
       lng: res.coords.longitude

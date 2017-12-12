@@ -139,8 +139,6 @@ user.getUser = (sId, fCallback) => {
     if (err) {
       return fCallback(true);
     }
-    // Remove sensitive data
-    delete data.password;
 
     // Transform GeoJSON to object
     const jLocationFormatted = {

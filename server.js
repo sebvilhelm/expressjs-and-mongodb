@@ -50,7 +50,6 @@ app.get('/get-users/', (req, res) => {
 
 app.get('/get-users/lng/:lng/lat/:lat', (req, res) => {
   const aLocation = [Number(req.params.lng), Number(req.params.lat)];
-  console.log(aLocation);
   user.getUsersGeo(aLocation, (err, data) => {
     if (err) {
       console.log('error');
@@ -128,6 +127,7 @@ app.post('/save-user/', (req, res) => {
     userImg: req.files.userImg,
     isAdmin: true
   };
+
   user.saveUser(jUser, (err, jUserCreated) => {
     const jRes = {
       status: 'success',
@@ -152,13 +152,6 @@ app.post('/update-user/', (req, res) => {
     password: req.fields.userPassword,
     email: req.fields.userEmail,
     phone: req.fields.userPhone,
-    location: {
-      type: 'Point',
-      coordinates: [
-        Number(req.fields.userPositionLng),
-        Number(req.fields.userPositionLat)
-      ]
-    },
     userImg: req.files.userImg,
     isAdmin: req.fields.userIsAdmin ? true : false
   };
