@@ -107,6 +107,33 @@ user.getAllUsers = fCallback => {
 
 /***********************************************/
 
+user.getUsersGeo = (aLocation, fCallback) => {
+  const radiusInKm = 5;
+  const radiusInRadians = radiusInKm / 3963.2;
+  //{location: { $geowithin: { $centerSphere: [aLocation, radiusInRadians] } }}
+  global.db
+    .collection('users')
+    .find({
+      location: { $geoWithin: { $centerSphere: [aLocation, radiusInRadians] } }
+    })
+    .toArray((err, data) => {
+      if (err) {
+        return fCallback(true);
+      }
+      // Remove sensitive data
+      data.forEach(user => {
+        delete user.password;
+        delete user.position;
+      });
+
+      return fCallback(false, data);
+    });
+};
+
+/***********************************************/
+
+/***********************************************/
+
 user.getUser = (sId, fCallback) => {
   const idQuery = new ObjectId(sId);
   global.db.collection('users').findOne(idQuery, (err, data) => {

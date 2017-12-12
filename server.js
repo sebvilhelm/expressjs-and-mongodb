@@ -35,7 +35,23 @@ app.get('/', (req, res) => {
 app.get('/get-users/', (req, res) => {
   user.getAllUsers((err, data) => {
     if (err) {
-      console.log(err);
+      console.log('err');
+      return res.json(false);
+    }
+    res.json(data);
+  });
+});
+
+/***********************************************/
+
+/***********************************************/
+
+app.get('/get-users/lng/:lng/lat/:lat', (req, res) => {
+  const aLocation = [Number(req.params.lng), Number(req.params.lat)];
+  console.log(aLocation);
+  user.getUsersGeo(aLocation, (err, data) => {
+    if (err) {
+      console.log('error');
       return res.json(false);
     }
     res.json(data);
@@ -100,7 +116,13 @@ app.post('/save-user/', (req, res) => {
     password: req.fields.userPassword,
     email: req.fields.userEmail,
     phone: req.fields.userPhone,
-    position: req.fields.userPosition,
+    location: {
+      type: 'Point',
+      coordinates: [
+        Number(req.fields.userPositionLng),
+        Number(req.fields.userPositionLat)
+      ]
+    },
     userImg: req.files.userImg,
     isAdmin: true
   };
@@ -128,7 +150,13 @@ app.post('/update-user/', (req, res) => {
     password: req.fields.userPassword,
     email: req.fields.userEmail,
     phone: req.fields.userPhone,
-    position: req.fields.userPosition,
+    location: {
+      type: 'Point',
+      coordinates: [
+        Number(req.fields.userPositionLng),
+        Number(req.fields.userPositionLat)
+      ]
+    },
     userImg: req.files.userImg,
     isAdmin: req.fields.userIsAdmin ? true : false
   };

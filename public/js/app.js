@@ -4,23 +4,11 @@ var sUserIdToEdit = '',
 var jCurrentUser = {},
   jUserPosition = {};
 
-// (function checkForSession() {
-//   doAjax('GET', 'api-check-session.php', function (res) {
-//     var jRes = JSON.parse(res);
-//     if (jRes.status == 'success') {
-//       jCurrentUser.id = jRes.id;
-//       jCurrentUser.isAdmin = jRes.isAdmin;
-//       menu.classList.remove('hide');
-//       showCurrentUserInfo();
-//       showAndHideAdminButtons();
-//       showPage('pageProfile');
-//     } else if (jRes.status == 'noUsers') {
-//       showPage('pageSignup');
-//     } else {
-//       showPage('pageLogin');
-//     }
-//   });
-// })();
+(function() {
+  getUserPosition(function() {
+    btnGeoQuery.classList.remove('hide');
+  });
+})();
 
 function loginUser() {
   var jFrm = new FormData(frmLogin);
@@ -66,8 +54,8 @@ function showAndHideAdminButtons() {
 // CRUD USERS
 function createUser() {
   var jFrm = new FormData(frmSignup);
-  var sjUserPosition = JSON.stringify(jUserPosition);
-  jFrm.append('userPosition', sjUserPosition);
+  jFrm.append('userPositionLng', jUserPosition.lng);
+  jFrm.append('userPositionLat', jUserPosition.lat);
   doAjax(
     'POST',
     '/save-user/',
@@ -98,7 +86,7 @@ function deleteUser(id) {
 }
 
 function showUsers() {
-  doAjax('GET', '/get-users', function(res) {
+  doAjax('GET', '/get-users/', function(res) {
     var ajUsers = JSON.parse(res);
     var sUserList = '';
 
@@ -142,6 +130,62 @@ function showUsers() {
     }
     userList.innerHTML = sUserList;
   });
+}
+
+function showUsersWithinRadius() {
+  const jPosition = jUserPosition;
+  doAjax(
+    'GET',
+    '/get-users/lng/' + jPosition.lng + '/lat/' + jPosition.lat,
+    function(res) {
+      var ajUsers = JSON.parse(res);
+      var sUserList = '';
+
+      for (var i = 0; i < ajUsers.length; i++) {
+        var sId = ajUsers[i]._id;
+        var sFullName = ajUsers[i].name + ' ' + ajUsers[i].lastName;
+        var sPhone = ajUsers[i].phone;
+        var sEmail = ajUsers[i].email;
+        var sImgSrc = ajUsers[i].img;
+        var sImgElem = sImgSrc
+          ? '<img src="' +
+            sImgSrc +
+            '" alt="' +
+            sFullName +
+            's profile picture">'
+          : '';
+        var sAdminBtn = jCurrentUser.isAdmin
+          ? '<button class="btnDeleteUser">delete</button><button class="btnEditUser">edit</button>'
+          : '';
+        sUserList +=
+          '<li class="userCard" data-userid="' +
+          sId +
+          '">\
+                ' +
+          sImgElem +
+          '\
+                <dl>\
+                  <dt>Name</dt>\
+                  <dd>' +
+          sFullName +
+          '</dd>\
+                  <dt>E-mail</dt>\
+                  <dd>' +
+          sEmail +
+          '</dd>\
+                  <dt>Phone</dt>\
+                  <dd>' +
+          sPhone +
+          '</dd>\
+                </dl>\
+                ' +
+          sAdminBtn +
+          '\
+              </li>';
+      }
+      userList.innerHTML = sUserList;
+    }
+  );
 }
 
 function showUserInfoToEdit(id) {
@@ -395,6 +439,8 @@ document.addEventListener('click', function(e) {
     buyProduct(sProductId);
   } else if (e.target.id == 'btnEditProductSubmit') {
     editProduct();
+  } else if (e.target.id == 'btnGeoQuery') {
+    showUsersWithinRadius();
   } else if (e.target.id == 'btnSubscribe') {
     subscribeNewsletter();
   } else if (e.target.classList.contains('btnMenu')) {
@@ -470,12 +516,8 @@ function setMapIsReady() {
   bMapIsReady = true;
 }
 
-// var jMarkerPos = {};
-
 function getUserPosition(callback) {
-  console.time('get Location');
   var geoLocation = navigator.geolocation.getCurrentPosition(function(res) {
-    // console.log(res.coords.latitude);
     jUserPosition = {
       lat: res.coords.latitude,
       lng: res.coords.longitude
