@@ -1,1 +1,1 @@
-[{"id":"_xmtlf5x9f","name":"new","price":"123","inventory":0,"img":"/img/products/product-_xmtlf5x9f.jpg"}]
+[]
