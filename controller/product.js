@@ -96,34 +96,15 @@ product.getProduct = (sId, fCallback) => {
 /***********************************************/
 
 product.deleteProduct = (sId, fCallback) => {
-  fs.readFile(__dirname + '/../data/products.txt', 'utf8', (err, data) => {
-    if (err) {
-      return fCallback(true);
-    }
-    // Parse data
-    const ajProducts = JSON.parse(data);
-    // Find a product with matching id
-    let productFound = false;
-    ajProducts.forEach((product, i) => {
-      if (product.id === sId) {
-        // if the ids match, delete the product from the array
-        ajProducts.splice(i, 1);
-        productFound = true;
-        // and write the array back to the file
-        const sajProducts = JSON.stringify(ajProducts);
-        fs.writeFile(__dirname + '/../data/products.txt', sajProducts, err => {
-          if (err) {
-            return fCallback(true);
-          }
-          return fCallback(false);
-        });
+  const idQuery = new ObjectId(sId);
+  global.db
+    .collection('products')
+    .deleteOne({ _id: idQuery }, (err, result) => {
+      if (err) {
+        return fCallback(true);
       }
+      return fCallback(false);
     });
-    // If no product matched, return error
-    if (!productFound) {
-      return fCallback(true);
-    }
-  });
 };
 
 /***********************************************/
