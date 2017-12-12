@@ -195,11 +195,11 @@ function showUserInfoToEdit(id) {
 
     sUserIdToEdit = jUser._id;
 
-    var jThisUserPosition = JSON.parse(jUser.position);
-
     var userMap = document.getElementById('map');
 
-    initMap(jThisUserPosition, userMap);
+    console.log(jUser.location);
+
+    initMap(jUser.location, userMap);
 
     if (jUser.isAdmin) {
       inputEditUserIsAdmin.checked = true;

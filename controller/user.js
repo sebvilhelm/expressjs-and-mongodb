@@ -71,7 +71,7 @@ user.loginUser = (jUser, fCallback) => {
       return fCallback(true);
     }
     delete user.password;
-    delete user.position;
+    delete user.location;
     delete user.img;
     delete user.phone;
     delete user.name;
@@ -96,9 +96,8 @@ user.getAllUsers = fCallback => {
       // Remove sensitive data
       data.forEach(user => {
         delete user.password;
-        delete user.position;
+        delete user.location;
       });
-
       return fCallback(false, data);
     });
 };
@@ -123,7 +122,7 @@ user.getUsersGeo = (aLocation, fCallback) => {
       // Remove sensitive data
       data.forEach(user => {
         delete user.password;
-        delete user.position;
+        delete user.location;
       });
 
       return fCallback(false, data);
@@ -142,6 +141,16 @@ user.getUser = (sId, fCallback) => {
     }
     // Remove sensitive data
     delete data.password;
+
+    // Transform GeoJSON to object
+    const jLocationFormatted = {
+      lng: data.location.coordinates[0],
+      lat: data.location.coordinates[1]
+    };
+
+    delete data.location;
+    data.location = jLocationFormatted;
+
     return fCallback(false, data);
   });
 };
