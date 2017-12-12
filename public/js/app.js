@@ -345,7 +345,7 @@ function showProductInfoToEdit(id) {
     inputEditProductPrice.value = jProduct.price;
     inputEditProductInventory.value = jProduct.inventory;
 
-    sProductIdToEdit = jProduct.id;
+    sProductIdToEdit = id;
   });
 }
 

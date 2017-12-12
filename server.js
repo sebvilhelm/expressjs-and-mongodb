@@ -230,10 +230,13 @@ app.get('/get-product/:id', (req, res) => {
 /***********************************************/
 
 app.post('/update-product/', (req, res) => {
-  const jProduct = req.fields;
-  const file = req.files;
-  jProduct.productImg = file.productImg;
-
+  const jProduct = {
+    id: req.fields.id,
+    name: req.fields.productName,
+    price: req.fields.productPrice,
+    inventory: Number(req.fields.productInventory),
+    productImg: req.files.productImg
+  };
   product.updateProduct(jProduct, err => {
     const jRes = {
       status: 'success'

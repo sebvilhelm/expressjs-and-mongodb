@@ -35,33 +35,31 @@ product.saveProduct = (jProduct, fCallback) => {
 
 /***********************************************/
 
-product.updateProduct = (jProductInfo, fCallback) => {
-  const jProduct = {
-    id: jProductInfo.id,
-    name: jProductInfo.productName,
-    price: jProductInfo.productPrice,
-    inventory: jProductInfo.productInventory
-  };
-
+product.updateProduct = (jProduct, fCallback) => {
+  console.log(jProduct.id);
+  const productId = new ObjectId(jProduct.id);
   // Check if the image size is above 0
-  if (jProductInfo.productImg.size > 0) {
+  if (jProduct.productImg.size > 0) {
+    const imgId = util.createId();
     // If so, define a new path and fs.rename
-    const imgName = 'product-' + jProduct.id + '.jpg';
+    const imgName = 'product-' + imgId + '.jpg';
     const imgPath = '/img/products/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jProduct.img = imgPath;
-    fs.renameSync(jProductInfo.productImg.path, imgPathAbsolute);
+    fs.renameSync(jProduct.productImg.path, imgPathAbsolute);
   }
 
-  const ajProducts = [jProduct];
+  delete jProduct.productImg;
+  delete jProduct.id;
 
-  const sajProducts = JSON.stringify(ajProducts);
-  fs.writeFile(__dirname + '/../data/products.txt', sajProducts, err => {
-    if (err) {
-      return fCallback(true);
-    }
-    return fCallback(false);
-  });
+  global.db
+    .collection('products')
+    .updateOne({ _id: productId }, { $set: jProduct }, (err, result) => {
+      if (err) {
+        return fCallback(true);
+      }
+      return fCallback(false);
+    });
 };
 
 /***********************************************/
