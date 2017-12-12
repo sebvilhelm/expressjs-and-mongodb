@@ -264,11 +264,12 @@ app.get('/buy-product/:productId/:userId', (req, res) => {
     productId: req.params.productId,
     userId: req.params.userId
   };
-  product.buyProduct(jOrder, err => {
+  product.buyProduct(jOrder, (err, jProductInfo) => {
     if (err) {
       return res.json({ status: 'error' });
     }
-    res.json({ status: 'success' });
+    jProductInfo.status = 'success';
+    res.json(jProductInfo);
   });
 });
 

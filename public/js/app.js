@@ -385,7 +385,7 @@ function buyProduct(id) {
       // change inventory counter
       var sIdSelector = 'inventoryCounter-' + id;
       var inventoryCounter = document.getElementById(sIdSelector);
-      inventoryCounter.innerHTML = jRes.newInventory;
+      inventoryCounter.innerHTML = jRes.inventory;
     } else if (jRes.status == 'noProducts') {
       var sMessage = 'We ran out of ' + jRes.name;
       jNotifOptions = {

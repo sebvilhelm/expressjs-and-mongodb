@@ -112,11 +112,26 @@ product.deleteProduct = (sId, fCallback) => {
 /***********************************************/
 
 product.buyProduct = (jOrder, fCallback) => {
-  global.db.collection('orders').insertOne(jOrder, err => {
-    if (err) {
-      return fCallback(true);
+  const productIdQuery = new ObjectId(jOrder.productId);
+  global.db.collection('products').findOne(productIdQuery, (err, product) => {
+    if (product.inventory > 0) {
+      product.inventory--;
+      global.db
+        .collection('products')
+        .updateOne({ _id: productIdQuery }, product, err => {
+          if (err) {
+            console.log(err);
+            return fCallback(true);
+          }
+          global.db.collection('orders').insertOne(jOrder, err => {
+            if (err) {
+              console.log(err);
+              return fCallback(true);
+            }
+            fCallback(false, product);
+          });
+        });
     }
-    fCallback(false);
   });
 };
 
