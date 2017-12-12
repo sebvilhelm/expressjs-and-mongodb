@@ -193,10 +193,12 @@ app.get('/get-products/', (req, res) => {
 /***********************************************/
 
 app.post('/save-product/', (req, res) => {
-  const jProduct = req.fields;
-  const file = req.files;
-
-  jProduct.productImg = file.productImg;
+  const jProduct = {
+    name: req.fields.productName,
+    price: req.fields.productPrice,
+    inventory: Number(req.fields.productInventory),
+    productImg: req.files.productImg
+  };
   product.saveProduct(jProduct, (err, jProductCreated) => {
     const jRes = {
       status: 'success',

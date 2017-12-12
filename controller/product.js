@@ -1,58 +1,31 @@
 const fs = require('fs');
+const util = require('../util');
 const product = {};
 
 /***********************************************/
 
 /***********************************************/
 
-product.saveProduct = (jProductInfo, fCallback) => {
-  /******************************/
-  // SLET TIL MONGO!!!!
-  const ID = function() {
-    return (
-      '_' +
-      Math.random()
-        .toString(36)
-        .substr(2, 9)
-    );
-  };
-  /******************************/
-
-  const productId = ID();
-
-  const jProduct = {
-    id: productId,
-    name: jProductInfo.productName,
-    price: jProductInfo.productPrice,
-    inventory: jProductInfo.productInventory
-  };
-
+product.saveProduct = (jProduct, fCallback) => {
   // Check if the image size is above 0
-  if (jProductInfo.productImg.size > 0) {
+  if (jProduct.productImg.size > 0) {
+    const imgId = util.createId();
     // If so, define a new path and fs.rename
-    const imgName = 'product-' + productId + '.jpg';
+    const imgName = 'product-' + imgId + '.jpg';
     const imgPath = '/img/products/' + imgName;
     const imgPathAbsolute = __dirname + '/../public' + imgPath;
     jProduct.img = imgPath;
-    fs.renameSync(jProductInfo.productImg.path, imgPathAbsolute);
+    fs.renameSync(jProduct.productImg.path, imgPathAbsolute);
   }
 
-  const ajProducts = [jProduct];
+  delete jProduct.productImg;
 
-  const sajProducts = JSON.stringify(ajProducts);
-  fs.writeFile(__dirname + '/../data/products.txt', sajProducts, err => {
+  global.db.collection('products').insertOne(jProduct, (err, result) => {
     if (err) {
       return fCallback(true);
     }
-    const jProductUpdated = { ...jProduct };
-    delete jProductUpdated.password;
-    delete jProductUpdated.position;
-    delete jProductUpdated.img;
-    delete jProductUpdated.phone;
-    delete jProductUpdated.name;
-    delete jProductUpdated.lastName;
-    delete jProductUpdated.email;
-    return fCallback(false, jProductUpdated);
+    jProduct._id = result.insertedId;
+    return fCallback(false, jProduct);
   });
 };
 
@@ -94,16 +67,15 @@ product.updateProduct = (jProductInfo, fCallback) => {
 /***********************************************/
 
 product.getAllProducts = fCallback => {
-  // Read products from products.txt
-  fs.readFile(__dirname + '/../data/products.txt', 'utf8', (err, data) => {
-    if (err) {
-      return fCallback(true);
-    }
-    // Parse data
-    const ajProducts = JSON.parse(data);
-    // Parse send data as array
-    return fCallback(false, ajProducts);
-  });
+  global.db
+    .collection('products')
+    .find()
+    .toArray((err, data) => {
+      if (err) {
+        return fCallback(true);
+      }
+      return fCallback(false, data);
+    });
 };
 
 /***********************************************/

@@ -4,11 +4,7 @@ var sUserIdToEdit = '',
 var jCurrentUser = {},
   jUserPosition = {};
 
-(function() {
-  getUserPosition(function() {
-    btnGeoQuery.classList.remove('hide');
-  });
-})();
+(function() {})();
 
 function loginUser() {
   var jFrm = new FormData(frmLogin);
@@ -440,7 +436,13 @@ document.addEventListener('click', function(e) {
   } else if (e.target.id == 'btnEditProductSubmit') {
     editProduct();
   } else if (e.target.id == 'btnGeoQuery') {
-    showUsersWithinRadius();
+    if (jUserPosition.lat && jUserPosition.lng) {
+      showUsersWithinRadius();
+      return;
+    }
+    getUserPosition(function() {
+      showUsersWithinRadius();
+    });
   } else if (e.target.id == 'btnSubscribe') {
     subscribeNewsletter();
   } else if (e.target.classList.contains('btnMenu')) {
