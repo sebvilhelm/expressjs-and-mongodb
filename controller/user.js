@@ -152,7 +152,6 @@ user.getUser = (sId, fCallback) => {
 
 user.deleteUser = (sId, fCallback) => {
   const idQuery = new ObjectId(sId);
-
   global.db.collection('users').deleteOne({ _id: idQuery }, (err, result) => {
     if (err) {
       return fCallback(true);
