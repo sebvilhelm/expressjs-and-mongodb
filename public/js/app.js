@@ -17,7 +17,7 @@ function loginUser() {
         jCurrentUser.id = jRes.user._id;
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         menu.classList.remove('hide');
-        showCurrentUserInfo();
+        showUserProfile(jCurrentUser.id);
         showAndHideAdminButtons();
         showPage('pageProfile');
       }
@@ -62,7 +62,7 @@ function createUser() {
         jCurrentUser.isAdmin = jRes.user.isAdmin;
         console.log('user created');
         menu.classList.remove('hide');
-        showCurrentUserInfo();
+        showUserProfile();
         showPage('pageProfile');
       } else if (jRes.status == 'success') {
         showUsers();
@@ -119,7 +119,7 @@ function showUsers() {
         sPhone +
         '</dd>\
                 </dl>\
-                ' +
+                <button class="btnShowProfile">Profile</button>' +
         sAdminBtn +
         '\
               </li>';
@@ -150,7 +150,7 @@ function showUsersWithinRadius() {
             sFullName +
             's profile picture">'
           : '';
-        var sAdminBtn = jCurrentUser.isAdmin
+        var sAdminBtns = jCurrentUser.isAdmin
           ? '<button class="btnDeleteUser">delete</button><button class="btnEditUser">edit</button>'
           : '';
         sUserList +=
@@ -174,8 +174,8 @@ function showUsersWithinRadius() {
           sPhone +
           '</dd>\
                 </dl>\
-                ' +
-          sAdminBtn +
+                <button class="btnShowProfile">Profile</button>' +
+          sAdminBtns +
           '\
               </li>';
       }
@@ -207,9 +207,8 @@ function showUserInfoToEdit(id) {
   });
 }
 
-function showCurrentUserInfo() {
-  var sUserId = jCurrentUser.id;
-  doAjax('GET', '/get-user/' + sUserId, function(res) {
+function showUserProfile(userId) {
+  doAjax('GET', '/get-user/' + userId, function(res) {
     var jUser = JSON.parse(res);
     var sId = jUser._id;
     var sFullName = jUser.name + ' ' + jUser.lastName;
@@ -220,7 +219,7 @@ function showCurrentUserInfo() {
       ? '<img src="' + sImgSrc + '" alt="' + sFullName + 's profile picture">'
       : '';
     var sUserList =
-      '<li class="userCard" data-userid="' +
+      '<div data-userid="' +
       sId +
       '">\
               ' +
@@ -242,7 +241,7 @@ function showCurrentUserInfo() {
               </dl>\
               <button class="btnDeleteUser">delete</button>\
               <button class="btnEditUser">edit</button>\
-            </li>';
+            </div>';
     userProfile.innerHTML = sUserList;
   });
 }
@@ -414,6 +413,10 @@ document.addEventListener('click', function(e) {
     var sUserId = e.target.parentNode.dataset.userid;
     showUserInfoToEdit(sUserId);
     showPage('pageEditUser');
+  } else if (e.target.classList.contains('btnShowProfile')) {
+    var sUserId = e.target.parentNode.dataset.userid;
+    showUserProfile(sUserId);
+    showPage('pageProfile');
   } else if (e.target.id == 'btnEditUserSubmit') {
     editUser();
   } else if (e.target.id == 'btnLogout') {
@@ -453,7 +456,7 @@ document.addEventListener('click', function(e) {
     } else if (pageToShow == 'pageAllProducts') {
       showProducts();
     } else if (pageToShow == 'pageProfile') {
-      showCurrentUserInfo();
+      showUserProfile(jCurrentUser.id);
     } else if (pageToShow == 'pageSignup') {
       getUserPosition(function() {
         var signupMap = document.getElementById('signupMap');
