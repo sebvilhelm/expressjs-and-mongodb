@@ -218,6 +218,9 @@ app.post('/save-product/', (req, res) => {
 app.get('/get-product/:id', (req, res) => {
   const id = req.params.id;
   product.getProduct(id, (err, data) => {
+    if (err) {
+      console.log('error');
+    }
     res.json(data);
   });
 });

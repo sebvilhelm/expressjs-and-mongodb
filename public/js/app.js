@@ -270,7 +270,7 @@ function showProducts() {
     var ajProducts = JSON.parse(res);
     var sProductList = '';
     for (var i = 0; i < ajProducts.length; i++) {
-      var sId = ajProducts[i].id;
+      var sId = ajProducts[i]._id;
       var sName = ajProducts[i].name;
       var sPrice = ajProducts[i].price;
       var sInventory = ajProducts[i].inventory;

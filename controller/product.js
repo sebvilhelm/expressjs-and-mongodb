@@ -1,5 +1,7 @@
 const fs = require('fs');
+const ObjectId = require('mongodb').ObjectId;
 const util = require('../util');
+
 const product = {};
 
 /***********************************************/
@@ -83,25 +85,12 @@ product.getAllProducts = fCallback => {
 /***********************************************/
 
 product.getProduct = (sId, fCallback) => {
-  fs.readFile(__dirname + '/../data/products.txt', 'utf8', (err, data) => {
+  const idQuery = new ObjectId(sId);
+  global.db.collection('products').findOne(idQuery, (err, data) => {
     if (err) {
       return fCallback(true);
     }
-    // Parse data
-    const ajProducts = JSON.parse(data);
-    // Find a product with matching id
-    let productFound = false;
-    ajProducts.forEach(product => {
-      if (product.id === sId) {
-        // if the ids match, send along with the callback
-        productFound = true;
-        return fCallback(false, product);
-      }
-    });
-    // Else, return error
-    if (!productFound) {
-      return fCallback(true);
-    }
+    return fCallback(false, data);
   });
 };
 
