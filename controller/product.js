@@ -36,7 +36,6 @@ product.saveProduct = (jProduct, fCallback) => {
 /***********************************************/
 
 product.updateProduct = (jProduct, fCallback) => {
-  console.log(jProduct.id);
   const productId = new ObjectId(jProduct.id);
   // Check if the image size is above 0
   if (jProduct.productImg.size > 0) {
