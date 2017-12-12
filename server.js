@@ -16,6 +16,8 @@ mongo.connect(sDatabasePath, (err, db) => {
   }
   global.db = db;
 
+  db.collection('users').createIndex({ email: 1 });
+
   console.log('Connected to database!');
 });
 
