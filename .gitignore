@@ -94,3 +94,4 @@ typings/
 ### IMAGES ###
 public/img/products/*
 public/img/users/*
+temp/*
