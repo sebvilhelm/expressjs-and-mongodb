@@ -110,8 +110,7 @@ user.getAllUsers = fCallback => {
 
 user.getUsersGeo = (aLocation, fCallback) => {
   const radiusInKm = 5;
-  const radiusInRadians = radiusInKm / 3963.2;
-  //{location: { $geowithin: { $centerSphere: [aLocation, radiusInRadians] } }}
+  const radiusInRadians = radiusInKm / 6378.1;
   global.db
     .collection('users')
     .find({
