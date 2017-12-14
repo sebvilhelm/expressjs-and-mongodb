@@ -69,6 +69,8 @@ user.loginUser = (jUser, fCallback) => {
   global.db.collection('users').findOne(jUser, (err, user) => {
     if (err) {
       return fCallback(true);
+    } else if (!user) {
+      return fCallback(true);
     }
     delete user.password;
     delete user.location;

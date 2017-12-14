@@ -170,3 +170,22 @@ button:focus {
   height: 200px;
   margin: 10px 0;
 }
+
+.loader {
+  background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20fill%3D%22%23b39ddb%22%20d%3D%22M73%2050c0-12.7-10.3-23-23-23S27%2037.3%2027%2050m3.9%200c0-10.5%208.5-19.1%2019.1-19.1S69.1%2039.5%2069.1%2050%22/%3E%3C/svg%3E);
+  background-size: cover;
+  margin: 10px auto;
+  width: 100px;
+  height: 100px;
+  animation: 1s linear spinLoader;
+  animation-iteration-count: infinite;
+}
+
+@keyframes spinLoader {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

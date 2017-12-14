@@ -452,6 +452,7 @@ document.addEventListener('click', function(e) {
       showUsersWithinRadius();
       return;
     }
+    showLoader(userList);
     getUserPosition(function() {
       showUsersWithinRadius();
     });
@@ -555,4 +556,8 @@ function initMap(jCenter, divMap) {
   } else {
     console.log('Google Maps is not ready');
   }
+}
+
+function showLoader(containerNode) {
+  containerNode.innerHTML = '<div class="loader"></div>';
 }
