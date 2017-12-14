@@ -26,16 +26,6 @@ function loginUser() {
   );
 }
 
-function logoutUser() {
-  doAjax('GET', 'api-destroy-session.php', function(res) {
-    var jRes = JSON.parse(res);
-    if (jRes.status == 'success') {
-      menu.classList.add('hide');
-      showPage('pageLogin');
-    }
-  });
-}
-
 function showAndHideAdminButtons() {
   var adminOnlyElem = document.querySelectorAll('.onlyForAdmin');
   for (var i = 0; i < adminOnlyElem.length; i++) {
