@@ -21,8 +21,14 @@ mongo.connect(sDatabasePath, (err, db) => {
   console.log('Connected to database!');
 });
 
+const tempFilePath = __dirname + '/temp/';
+
 app.use(express.static('public'));
-app.use(formidable());
+app.use(
+  formidable({
+    uploadDir: tempFilePath
+  })
+);
 
 /***********************************************/
 
