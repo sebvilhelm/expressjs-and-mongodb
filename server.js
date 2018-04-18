@@ -3,11 +3,12 @@ const mongo = require('mongodb').MongoClient;
 const formidable = require('express-formidable');
 const user = require('./controller/user');
 const product = require('./controller/product');
+require('dotenv').config();
 
 const app = express();
 
 global.db = null;
-const sDatabasePath = 'mongodb://localhost:27017/dbexam';
+const sDatabasePath = process.env.DATABASE_PATH;
 
 mongo.connect(sDatabasePath, (err, db) => {
   if (err) {
@@ -21,24 +22,24 @@ mongo.connect(sDatabasePath, (err, db) => {
   console.log('Connected to database!');
 });
 
-const tempFilePath = __dirname + '/temp/';
+const tempFilePath = `${__dirname  }/temp/`;
 
 app.use(express.static('public'));
 app.use(
   formidable({
-    uploadDir: tempFilePath
+    uploadDir: tempFilePath,
   })
 );
 
-/***********************************************/
+/********************************************** */
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html');
+  res.sendFile(`${__dirname  }/views/index.html`);
 });
 
-/***********************************************/
+/********************************************** */
 // USERS
-/***********************************************/
+/** *********************************************/
 
 app.get('/get-users/', (req, res) => {
   user.getAllUsers((err, data) => {
@@ -50,9 +51,9 @@ app.get('/get-users/', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.get('/get-users/lng/:lng/lat/:lat', (req, res) => {
   const aLocation = [Number(req.params.lng), Number(req.params.lat)];
@@ -65,9 +66,9 @@ app.get('/get-users/lng/:lng/lat/:lat', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/********************************************** */
 
 app.get('/get-user/:id', (req, res) => {
   const id = req.params.id;
@@ -76,9 +77,9 @@ app.get('/get-user/:id', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/** *********************************************/
 
 app.get('/delete-user/:id', (req, res) => {
   const id = req.params.id;
@@ -90,18 +91,18 @@ app.get('/delete-user/:id', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/********************************************** */
 
 app.post('/login/', (req, res) => {
   const jUserLogin = {
     email: req.fields.userEmail,
-    password: req.fields.userPassword
+    password: req.fields.userPassword,
   };
   user.loginUser(jUserLogin, (err, userData) => {
     const response = {
-      status: 'err'
+      status: 'err',
     };
     if (err) {
       return res.json(response);
@@ -112,9 +113,9 @@ app.post('/login/', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/********************************************** */
 
 app.post('/save-user/', (req, res) => {
   const jUser = {
@@ -125,19 +126,16 @@ app.post('/save-user/', (req, res) => {
     phone: req.fields.userPhone,
     location: {
       type: 'Point',
-      coordinates: [
-        Number(req.fields.userPositionLng),
-        Number(req.fields.userPositionLat)
-      ]
+      coordinates: [Number(req.fields.userPositionLng), Number(req.fields.userPositionLat)],
     },
     userImg: req.files.userImg,
-    isAdmin: true
+    isAdmin: true,
   };
 
   user.saveUser(jUser, (err, jUserCreated) => {
     const jRes = {
       status: 'success',
-      user: jUserCreated
+      user: jUserCreated,
     };
     if (err) {
       jRes.status = 'error';
@@ -146,9 +144,9 @@ app.post('/save-user/', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.post('/update-user/', (req, res) => {
   const jUser = {
@@ -159,12 +157,12 @@ app.post('/update-user/', (req, res) => {
     email: req.fields.userEmail,
     phone: req.fields.userPhone,
     userImg: req.files.userImg,
-    isAdmin: req.fields.userIsAdmin ? true : false
+    isAdmin: !!req.fields.userIsAdmin,
   };
 
   user.updateUser(jUser, err => {
     const jRes = {
-      status: 'success'
+      status: 'success',
     };
     if (err) {
       jRes.status = 'error';
@@ -173,9 +171,9 @@ app.post('/update-user/', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 // Products
-/***********************************************/
+/** *********************************************/
 
 app.get('/get-products/', (req, res) => {
   product.getAllProducts((err, data) => {
@@ -187,21 +185,21 @@ app.get('/get-products/', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.post('/save-product/', (req, res) => {
   const jProduct = {
     name: req.fields.productName,
     price: req.fields.productPrice,
     inventory: Number(req.fields.productInventory),
-    productImg: req.files.productImg
+    productImg: req.files.productImg,
   };
   product.saveProduct(jProduct, (err, jProductCreated) => {
     const jRes = {
       status: 'success',
-      products: jProductCreated
+      products: jProductCreated,
     };
     if (err) {
       jRes.status = 'error';
@@ -210,9 +208,9 @@ app.post('/save-product/', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.get('/get-product/:id', (req, res) => {
   const id = req.params.id;
@@ -224,9 +222,9 @@ app.get('/get-product/:id', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/** *********************************************/
 
 app.post('/update-product/', (req, res) => {
   const jProduct = {
@@ -234,11 +232,11 @@ app.post('/update-product/', (req, res) => {
     name: req.fields.productName,
     price: req.fields.productPrice,
     inventory: Number(req.fields.productInventory),
-    productImg: req.files.productImg
+    productImg: req.files.productImg,
   };
   product.updateProduct(jProduct, err => {
     const jRes = {
-      status: 'success'
+      status: 'success',
     };
     if (err) {
       jRes.status = 'error';
@@ -247,9 +245,9 @@ app.post('/update-product/', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.get('/delete-product/:id', (req, res) => {
   const id = req.params.id;
@@ -261,14 +259,14 @@ app.get('/delete-product/:id', (req, res) => {
   });
 });
 
-/***********************************************/
+/** *********************************************/
 
-/***********************************************/
+/** *********************************************/
 
 app.get('/buy-product/:productId/:userId', (req, res) => {
   const jOrder = {
     productId: req.params.productId,
-    userId: req.params.userId
+    userId: req.params.userId,
   };
   product.buyProduct(jOrder, (err, jProductInfo) => {
     if (err) {
@@ -279,9 +277,9 @@ app.get('/buy-product/:productId/:userId', (req, res) => {
   });
 });
 
-/***********************************************/
+/********************************************** */
 
-/***********************************************/
+/********************************************** */
 
 app.listen('3000', err => {
   if (err) {
@@ -291,4 +289,4 @@ app.listen('3000', err => {
   console.log('Server is running at port:3000');
   return true;
 });
-/***********************************************/
+/********************************************** */
